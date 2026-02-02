@@ -242,7 +242,7 @@ strong {
    HERO SECTION - Clean, Centered
    ========================================== */
 .hero {
-  padding: 140px 0 80px;
+  padding: 100px 0 60px;
   position: relative;
 }
 
@@ -303,7 +303,7 @@ strong {
 
 .hero-name {
   font-family: var(--font-display);
-  font-size: 56px;
+  font-size: 40px;
   font-weight: 600;
   color: var(--color-text-primary);
   line-height: 1.1;
@@ -375,17 +375,17 @@ strong {
    SECTION COMMON
    ========================================== */
 .section {
-  padding: var(--section-gap) 0;
+  padding: 40px 0;
 }
 
 .section-header {
-  margin-bottom: 48px;
+  margin-bottom: 24px;
   text-align: center;
 }
 
 .section-title {
   font-family: var(--font-display);
-  font-size: 48px;
+  font-size: 28px;
   font-weight: 600;
   color: var(--color-text-primary);
   letter-spacing: -0.025em;
@@ -416,7 +416,7 @@ strong {
   display: flex;
   gap: 24px;
   align-items: baseline;
-  padding: 20px 0;
+  padding: 16px 0;
   border-bottom: 1px solid var(--color-border-light);
   transition: background var(--duration-fast) var(--ease-out);
 }
@@ -502,7 +502,7 @@ strong {
 .pub-list {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
+  gap: 16px;
   max-width: 860px;
   margin: 0 auto;
 }
@@ -672,7 +672,7 @@ strong {
 
 .timeline-item {
   position: relative;
-  margin-bottom: 48px;
+  margin-bottom: 36px;
 }
 
 .timeline-item:last-child {
