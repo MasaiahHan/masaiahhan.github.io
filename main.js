@@ -23,8 +23,8 @@
         });
       },
       {
-        threshold: 0.08,
-        rootMargin: '0px 0px -40px 0px',
+        threshold: 0.05,
+        rootMargin: '0px 0px -80px 0px',
       }
     );
 
@@ -69,6 +69,7 @@
     toggle.addEventListener('click', () => {
       toggle.classList.toggle('open');
       links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', links.classList.contains('open'));
     });
 
     // Close menu when a link is clicked
@@ -175,6 +176,109 @@
   }
 
   // ========================================
+  // Staggered Reveals for Cards
+  // ========================================
+  function initStaggeredReveals() {
+    const pubCards = document.querySelectorAll('.pub-card');
+    const newsItems = document.querySelectorAll('.news-item');
+    const timelineItems = document.querySelectorAll('.timeline-item');
+
+    function applyStagger(items, maxItems = 5) {
+      items.forEach((item, index) => {
+        if (index < maxItems) {
+          item.style.transitionDelay = `${index * 0.08}s`;
+        }
+      });
+    }
+
+    applyStagger(pubCards);
+    applyStagger(newsItems);
+    applyStagger(timelineItems);
+  }
+
+  // ========================================
+  // Hero Parallax Effect
+  // ========================================
+  function initHeroParallax() {
+    const heroContent = document.querySelector('.hero-content');
+    if (!heroContent) return;
+
+    // Only apply on desktop
+    if (window.innerWidth <= 768) return;
+
+    let ticking = false;
+
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          const translateY = scrollY * 0.3;
+          const opacity = Math.max(0, 1 - scrollY / 600);
+
+          heroContent.style.transform = `translateY(${translateY}px)`;
+          heroContent.style.opacity = opacity;
+
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Reset on resize if switching to mobile
+    window.addEventListener('resize', () => {
+      if (window.innerWidth <= 768) {
+        heroContent.style.transform = '';
+        heroContent.style.opacity = '';
+      }
+    });
+  }
+
+  // ========================================
+  // 3D Tilt Effect on Cards
+  // ========================================
+  function initTiltEffect() {
+    if (window.innerWidth <= 768) return;
+
+    const cards = document.querySelectorAll('.pub-card, .edu-item');
+
+    cards.forEach((card) => {
+      card.style.transformStyle = 'preserve-3d';
+      card.style.willChange = 'transform';
+
+      // Create light reflection overlay
+      const shine = document.createElement('div');
+      shine.style.cssText = 'position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity 0.3s;background:radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15) 0%, transparent 60%);z-index:1;';
+      card.style.position = 'relative';
+      card.style.overflow = 'hidden';
+      card.appendChild(shine);
+
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * -3;
+        const rotateY = ((x - centerX) / centerX) * 3;
+
+        card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px) scale(1.005)`;
+
+        // Move shine to follow cursor
+        shine.style.opacity = '1';
+        shine.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.2) 0%, transparent 60%)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+        shine.style.opacity = '0';
+      });
+    });
+  }
+
+  // ========================================
   // Initialize Everything
   // ========================================
   function init() {
@@ -184,6 +288,71 @@
     initSmoothScroll();
     initBackToTop();
     initActiveNav();
+    initStaggeredReveals();
+    initHeroParallax();
+    initTiltEffect();
+    initStarTrail();
+  }
+
+  // ========================================
+  // Star Trail Effect
+  // ========================================
+  function initStarTrail() {
+    const starTrail = document.createElement('div');
+    starTrail.className = 'star-trail';
+    document.body.appendChild(starTrail);
+
+    const starColors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#ffffff', '#a29bfe', '#fd79a8', '#00cec9'];
+
+    document.addEventListener('mousemove', (e) => {
+      // Create multiple stars for denser trail
+      const numStars = 3;
+      for (let i = 0; i < numStars; i++) {
+        const offsetX = (Math.random() - 0.5) * 30;
+        const offsetY = (Math.random() - 0.5) * 30;
+        createStar(e.clientX + offsetX, e.clientY + offsetY);
+      }
+    });
+
+    function createStar(x, y) {
+      const star = document.createElement('div');
+      star.className = 'star-particle';
+      
+      const size = Math.random() * 8 + 4;
+      const color = starColors[Math.floor(Math.random() * starColors.length)];
+      
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      star.style.left = (x - size / 2) + 'px';
+      star.style.top = (y - size / 2) + 'px';
+      star.style.background = color;
+      star.style.boxShadow = `0 0 ${size * 1.5}px ${color}, 0 0 ${size * 3}px ${color}`;
+      star.style.borderRadius = Math.random() > 0.5 ? '50%' : '20%';
+      
+      const angle = Math.random() * Math.PI * 2;
+      const velocity = Math.random() * 30 + 20;
+      const vx = Math.cos(angle) * velocity;
+      const vy = Math.sin(angle) * velocity;
+      
+      star.style.setProperty('--vx', vx + 'px');
+      star.style.setProperty('--vy', vy + 'px');
+      star.style.animation = 'starFade 0.8s ease-out forwards';
+      
+      starTrail.appendChild(star);
+
+      // Add movement
+      star.animate([
+        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+        { transform: `translate(${vx}px, ${vy}px) scale(0)`, opacity: 0 }
+      ], {
+        duration: 800,
+        easing: 'ease-out'
+      });
+
+      setTimeout(() => {
+        star.remove();
+      }, 800);
+    }
   }
 
   if (document.readyState === 'loading') {
