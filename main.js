@@ -291,68 +291,6 @@
     initStaggeredReveals();
     initHeroParallax();
     initTiltEffect();
-    initStarTrail();
-  }
-
-  // ========================================
-  // Star Trail Effect
-  // ========================================
-  function initStarTrail() {
-    const starTrail = document.createElement('div');
-    starTrail.className = 'star-trail';
-    document.body.appendChild(starTrail);
-
-    const starColors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#ffffff', '#a29bfe', '#fd79a8', '#00cec9'];
-
-    document.addEventListener('mousemove', (e) => {
-      // Create multiple stars for denser trail
-      const numStars = 3;
-      for (let i = 0; i < numStars; i++) {
-        const offsetX = (Math.random() - 0.5) * 30;
-        const offsetY = (Math.random() - 0.5) * 30;
-        createStar(e.clientX + offsetX, e.clientY + offsetY);
-      }
-    });
-
-    function createStar(x, y) {
-      const star = document.createElement('div');
-      star.className = 'star-particle';
-      
-      const size = Math.random() * 8 + 4;
-      const color = starColors[Math.floor(Math.random() * starColors.length)];
-      
-      star.style.width = size + 'px';
-      star.style.height = size + 'px';
-      star.style.left = (x - size / 2) + 'px';
-      star.style.top = (y - size / 2) + 'px';
-      star.style.background = color;
-      star.style.boxShadow = `0 0 ${size * 1.5}px ${color}, 0 0 ${size * 3}px ${color}`;
-      star.style.borderRadius = Math.random() > 0.5 ? '50%' : '20%';
-      
-      const angle = Math.random() * Math.PI * 2;
-      const velocity = Math.random() * 30 + 20;
-      const vx = Math.cos(angle) * velocity;
-      const vy = Math.sin(angle) * velocity;
-      
-      star.style.setProperty('--vx', vx + 'px');
-      star.style.setProperty('--vy', vy + 'px');
-      star.style.animation = 'starFade 0.8s ease-out forwards';
-      
-      starTrail.appendChild(star);
-
-      // Add movement
-      star.animate([
-        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
-        { transform: `translate(${vx}px, ${vy}px) scale(0)`, opacity: 0 }
-      ], {
-        duration: 800,
-        easing: 'ease-out'
-      });
-
-      setTimeout(() => {
-        star.remove();
-      }, 800);
-    }
   }
 
   if (document.readyState === 'loading') {
