@@ -80,6 +80,8 @@
   --badge-acl-bg: #f5f3ff;
   --badge-cvpr: #c2410c;
   --badge-cvpr-bg: #fff7ed;
+  --badge-tpami: #0f766e;
+  --badge-tpami-bg: #ecfdf5;
   --badge-arxiv: #6b7280;
   --badge-arxiv-bg: #f4f4f5;
   --badge-oral: #dc2626;
@@ -771,6 +773,11 @@ strong {
   color: var(--badge-cvpr);
 }
 
+.pub-badge--tpami {
+  background: var(--badge-tpami-bg);
+  color: var(--badge-tpami);
+}
+
 .pub-badge--first {
   background: var(--badge-first-bg);
   color: var(--badge-first);
@@ -1209,6 +1216,8 @@ strong {
     --badge-iclr-bg: rgba(34, 211, 238, 0.15);
     --badge-acl: #c4b5fd;
     --badge-acl-bg: rgba(196, 181, 253, 0.15);
+    --badge-tpami: #5eead4;
+    --badge-tpami-bg: rgba(94, 234, 212, 0.15);
     --badge-arxiv: #9ca3af;
     --badge-arxiv-bg: rgba(156, 163, 175, 0.15);
     --badge-oral: #f87171;
